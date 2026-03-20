@@ -1,0 +1,139 @@
+/* rs-theme-name: PrismDefaultGreyBox */
+/* rs-theme-is-dark: FALSE */
+
+/* ================================================
+   WHITE DOCUMENT BACKGROUND
+   ================================================ */
+.rstudio-themes-default .source-pane,
+.rstudio-themes-default .editing-area,
+.rstudio-themes-default .document {
+    background-color: #ffffff !important;
+}
+
+/* ================================================
+   GREY BOX AROUND QMD/RMD CODE CHUNKS
+   (executing chunks like ```{r})
+   ================================================ */
+.rstudio-themes-default .source-code {
+    background-color: #e8e8e8 !important; /* A slightly different grey */
+    color: #e8e8e8 !important; /* A slightly different grey */
+
+}
+
+.rstudio-themes-default .rmd-chunk-container,
+.rstudio-themes-default .notebook-chunk,
+.rstudio-themes-default .quarto-code-cell {
+    background-color: #f5f5f5 !important;    /* light grey */
+    border: 1px solid #d0d0d0 !important;     /* grey border */
+    border-radius: 6px !important;
+    padding: 10px !important;
+    margin-top: 12px !important;
+    margin-bottom: 12px !important;
+}
+
+/* Inner background where Ace editor sits */
+.rstudio-themes-default .rmd-chunk-background,
+.rstudio-themes-default .quarto-code-background {
+    background-color: #f7f7f7 !important;
+    border-radius: 4px !important;
+}
+
+/* ================================================
+   GREY BOX AROUND NON‑EXECUTING FENCED CODE BLOCKS
+   (plain ``` code --- not chunks)
+   ================================================ */
+.rstudio-themes-default .source-code {
+    background-color: #f5f5f5 !important;
+    border: 1px solid #d0d0d0 !important;
+    border-radius: 6px !important;
+    padding: 10px !important;
+    margin-top: 12px !important;
+    margin-bottom: 12px !important;
+}
+
+/* ================================================
+   ACE SYNTAX COLORS — PRISM DEFAULT
+   ================================================ */
+.ace_editor {
+    background-color: transparent !important;   /* let grey show */
+    color: #000000 !important;
+}
+
+.ace_content {
+    background-color: #f7f7f7 !important;   /* let grey show */
+    color: #f7f7f7 !important;
+    box-sizing: border-box;
+    min-width: 100%;
+}
+
+.ace_scroller {
+    background-color: #f7f7f7 !important;   /* let grey show */
+    color: #f7f7f7 !important;
+    box-sizing: border-box;
+    min-width: 100%;
+}
+
+
+/* This targets the background of the code inside the chunk */
+.ace_foreign_line {
+    background-color: #f7f7f7 !important; /* Change this hex code */
+}
+
+/* This targets the container and borders you already have */
+.rstudio-themes-default .rmd-chunk-container,
+.rstudio-themes-default .notebook-chunk {
+    background-color: #f5f5f5 !important;
+    border: 1px solid #d0d0d0 !important;
+}
+
+
+/* Keywords */
+.ace_keyword {
+    color: #0077aa !important;
+    font-weight: bold !important;
+}
+
+/* Functions */
+.ace_support.ace_function {
+    color: #0077aa !important;
+}
+
+/* Strings */
+.ace_string {
+    color: #669900 !important;
+}
+
+/* Numbers */
+.ace_constant.ace_numeric {
+    color: #990055 !important;
+}
+
+/* Identifiers */
+.ace_identifier {
+    color: #795e26 !important;
+}
+
+/* Comments */
+.ace_comment {
+    color: #708090 !important;
+    font-style: italic !important;
+}
+
+/* Operators/punctuation */
+.ace_operator,
+.ace_keyword.ace_operator,
+.ace_punctuation {
+    color: #000000 !important;
+}
+
+/* Line numbers */
+.ace_gutter {
+    background: #eeeeee !important;
+    color: #888888 !important;
+    border-right: 1px solid #dcdcdc !important;
+}
+
+/* Selection highlight */
+.ace_marker-layer .ace_selection {
+    background: #d0e0ff !important;
+}

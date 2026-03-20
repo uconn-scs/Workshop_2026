@@ -1,0 +1,19 @@
+
+/* Works for kable() tables in revealjs */
+.reveal table caption {
+  text-align: left !important;
+  caption-side: top !important;
+}
+
+
+.reveal .quarto-table caption {
+  text-align: left !important;
+}
+
+
+
+/* Sometimes kableExtra wraps tables in divs */
+.reveal .table caption,
+caption {
+  text-align: left !important;
+}

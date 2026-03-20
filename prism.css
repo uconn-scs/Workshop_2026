@@ -1,0 +1,49 @@
+
+/* Prism.js custom theme – mimics RStudio */
+
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #000000;
+  font-family: Consolas, "Source Code Pro", monospace;
+  font-size: 1rem;
+}
+
+/* RStudio blue function names */
+.token.function {
+  color: #0000C8;
+}
+
+/* RStudio bold blue keywords */
+.token.keyword {
+  color: #0000C8;
+  font-weight: bold;
+}
+
+/* RStudio green strings */
+.token.string {
+  color: #008000;
+}
+
+/* RStudio red numbers */
+.token.number {
+  color: #A00000;
+}
+
+/* Comments (gray-green) */
+.token.comment {
+  color: #6A9955;
+  font-style: italic;
+}
+
+/* Arguments (olive) */
+.token.parameter,
+.token.property,
+.token.variable {
+  color: #795E26;
+}
+
+/* Operators and punctuation */
+.token.operator,
+.token.punctuation {
+  color: #000000;
+}

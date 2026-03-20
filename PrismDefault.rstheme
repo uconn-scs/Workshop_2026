@@ -1,0 +1,97 @@
+/* rs-theme-name: Prism Default */
+/* rs-theme-is-dark: FALSE */
+
+
+/* Light grey background for chunk boxes */
+.rstudio-themes-flat .rmd-chunk-container,
+.rstudio-themes-default .rmd-chunk-container,
+.rstudio-themes-flat .notebook-chunk,
+.rstudio-themes-default .notebook-chunk {
+  background-color: #f6f6f6 !important;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0 !important;
+}
+
+
+.rstudio-themes-flat .quarto-code-cell,
+.rstudio-themes-default .quarto-code-cell {
+  background-color: #f6f6f6 !important;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0 !important;
+}
+
+
+Light-grey editor background */
+.ace_editor,
+.ace_editor_theme {
+  background-color: #f6f6f6 !important;   /* subtle light grey */
+  color: #000000;  /* keep text black */
+}
+
+/* Slightly darker gutter */
+.ace_gutter {
+  background-color: #e9e9e9 !important;  /* more contrast */
+  color: #888888 !important;             /* softer line numbers */
+  border-right: 1px solid #d8d8d8 !important;
+}
+
+/* Light border around the editor "box" */
+.ace_scroller {
+  border: 1px solid #e0e0e0 !important;
+}
+
+/* Make selection a bit more visible */
+.ace_marker-layer .ace_selection {
+  background-color: #dfe8f7 !important; /* light bluish highlight */
+}
+
+
+/* Base colors */
+.ace_editor {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Keywords (blue, bold) */
+.ace_keyword {
+  color: #0077aa;
+  font-weight: bold;
+}
+
+/* Functions (blue) */
+.ace_support.ace_function {
+  color: #0077aa;
+}
+
+/* Strings (green) */
+.ace_string {
+  color: #669900;
+}
+
+/* Numbers (purple-ish) */
+.ace_constant.ace_numeric {
+  color: #990055;
+}
+
+/* Variables / identifiers (olive) */
+.ace_identifier {
+  color: #795e26;
+}
+
+/* Operators */
+.ace_operator,
+.ace_keyword.ace_operator {
+  color: #000000;
+}
+
+/* Comments (gray, italic) */
+.ace_comment {
+  color: #708090;
+  font-style: italic;
+}
+
+/* Punctuation */
+.ace_punctuation {
+  color: #000000;
+}
+
