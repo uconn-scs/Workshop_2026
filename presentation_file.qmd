@@ -1,0 +1,295 @@
+---
+title: "Introduction to msDiaLogue - Spring 2026"
+subtitle: "UConn Statistical Consulting Services"
+date: "2026-03-18"
+author: "Timothy E. Moore, Eric Bae, & Shiying Xiao"
+echo: true
+format:
+  revealjs:
+    code-line-numbers: true
+    slide-number: true
+    css: styles.css
+number-sections: false  # optional
+crossref:
+  fig-prefix: "Figure"
+  tbl-prefix: "Table"
+---
+
+## 
+
+**NOTE:** This file is available in the Day 3 folder of this workshop's OneDrive
+
+```{r, echo = FALSE}
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(knitr)
+library(kableExtra)
+library(gtsummary)
+
+```
+
+## Why msDiaLogue
+
+To develop a flexible, customizable analysis pipeline for PMF users for use with proteomics experiments:
+
+-   Primarily DIA-focussed, but expanded to DDA (Scaffold)
+-   Adding peptide-level functionality (e.g., Phospo-proteome, Ubuquitome)
+-   Including metabolomics
+
+**We want analysis choices to be as transparent as possible**
+
+See: <https://uconn-scs.github.io/msDiaLogue/>.
+
+## Overview
+
+Aim to be able to conduct analysis from start to finish within an integrated platform:
+
+-   Transformation
+-   Normalization
+-   Imputation
+-   DA Analysis
+-   Summarization & Visualization
+
+## Goals
+
+-   To showcase some of the methodological features included in **msDiaLogue**.
+-   Illustrate an analysis workflow on a 'real' dataset.
+-   Promote the usage of this software for any proteomics (and metabolomics) analyses done in conjunction with PMF
+-   Ask: any features you'd like to see?
+
+## Example data
+
+Set of plasma samples that were either not enriched (non-depleted), or enriched by one of 3 different bead types from various vendors:
+
+::: {#tbl-1 .quarto-table tbl-cap="Example data structure"}
+```{r echo = FALSE}
+library(knitr)
+library(kableExtra)
+
+knitr::kable(
+  data.frame(
+    Condition = c("ENR", "ENRPlus", "ABC"),
+    N = c(3, 3, 3)
+  ),
+  align = "l"
+) %>%
+  kable_paper("hover") %>%
+  kable_styling(font_size = 40)
+```
+:::
+
+## R programming basics
+
+```{r, eval = FALSE, echo = TRUE}
+
+object_1 <- function(argument1  = X)
+  
+object_2 <- function(argument_1 = "AAA", 
+                   argument_2 = 123, 
+                   argument_3  = object1)
+
+
+```
+
+## installation
+
+```{r, eval = FALSE}
+
+install.packages("pak")
+pak::pkg_install("uconn-scs/msDiaLogue")
+
+```
+
+## preprocessing()
+
+```{r, echo = FALSE}
+dat_0 <- read.csv("data/20250921_182428_20250921_PAcer_Ceres_HumanPlasmaEnrichmentComparison_1hrDIAPASEF_Report.csv")
+
+dat_0 <- dat_0[!dat_0$PG.Genes=="DMKN",]
+dat_0 <- dplyr::filter(dat_0,!grepl("CON_", PG.ProteinAccessions))
+
+dat_0 %>% group_by(R.Replicate, R.Condition) %>%slice_head(n=100) %>%
+  write.csv(., "cleaned.csv")
+  
+  
+```
+
+```{r}
+dataRaw <- preprocessing(dataSet = dat_0,
+                         filterNaN = TRUE, filterUnique = 2,
+                         replaceBlank = TRUE, saveRm = TRUE)
+
+```
+
+## preprocessing()
+
+#### Original
+
+```{r, echo = FALSE}
+
+head(dat_0, 3)
+
+```
+
+#### Preprocessed
+
+```{r, echo = FALSE}
+
+head(datRaw[1:3,1:4])
+
+```
+
+
+## transform()
+
+```{r}
+
+trans <- transform(datRaw, method = "log", logFold = 2)
+
+```
+
+
+## normalize()
+
+```{r}
+
+norm <- normalize(trans, applyto = "sample", normalizeType = "median")
+
+```
+
+## filtering (again)
+
+```{r}
+filt <- filterNA(norm, minProp = 0.2, by = "cond", saveRm = TRUE)
+
+
+
+
+```
+
+## imputation
+
+```{r}
+visualize.dist(norm)
+
+```
+
+
+## imputation
+
+```{r, results='hide'}
+
+imp_full <- impute.knn_seq(norm)
+
+imp_filt <- impute.knn_seq(filt)
+
+
+```
+
+## imputation
+
+```{r}
+visualize.dist(list("Pre-Imputation" = norm, 
+                    "Post-Imputation" = imp_full))
+
+
+```
+
+## imputation
+
+```{r}
+
+visualize.dist(list("Pre-Imputation" = filt, 
+                    "Post-Imputation" = imp_filt))
+
+
+```
+
+## summarization
+
+```{r}
+dataSumm <- summarize(imp_filt, saveSumm = TRUE)  %>%
+  mutate(across(where(is.numeric), ~ round(.x, 2)))
+
+
+dataSumm[1:5, 1:5]
+
+```
+
+## analysis
+
+```{r}
+
+levels(imp_filt$R.Condition)
+
+anlys_modt <- analyze.mod_t(imp_filt, ref = "Nondepleted")
+
+head(anlys_modt$`ENR-Nondepleted`[,1:5])
+
+
+```
+
+## analysis
+
+### unsupervised
+
+```{r}
+anlys_pca <- analyze.pca(imp_filt, center = TRUE, scale = TRUE)
+
+```
+
+## analysis
+
+### supervised & regularized
+```{r}
+anlys_plsda <- analyze.plsda(imp_filt, method = "kernelpls",
+                             center = TRUE, scale = FALSE)
+
+```
+
+
+## visualization
+
+```{r}
+
+visualize.rank(imp_filt %>% dplyr::select(R.Condition, R.Replicate,
+                                          KAIN_HUMAN, 
+                                          sample(4:ncol(imp_filt), 50, replace = F)), 
+               listName = "KAIN_HUMAN", color = "darkred")
+
+```
+
+
+## visualization
+
+```{r}
+visualize.test(anlys_modt$`ENR-Nondepleted`)
+
+```
+
+## visualization
+
+```{r}
+visualize.test(anlys_modt)
+
+```
+
+
+```{r}
+
+visualize.volcano(anlys_modt$`ENR-Nondepleted`, P.thres = 0.05, F.thres = 1)
+
+```
+
+```{r}
+visualize.score(anlys_pca, ellipse = TRUE,
+                ellipse.level = 0.95, 
+                label = TRUE)
+```
+
+
+```{r}
+visualize.vip(anlys_plsda, comp = 1, num = 10,
+              thres = 0.2)
+```
